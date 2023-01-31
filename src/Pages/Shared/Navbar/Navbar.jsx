@@ -17,7 +17,7 @@ const Navbar = () => {
         <Link to="/reviews">Reviews</Link>
       </li>
       <li>
-        <Link to="/">Login</Link>
+        <Link to="/login">Login</Link>
       </li>
     </React.Fragment>
   );
