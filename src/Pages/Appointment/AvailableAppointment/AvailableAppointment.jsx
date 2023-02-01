@@ -5,7 +5,7 @@ import OptionCard from "./OptionCard";
 
 const AvailableAppointment = ({ selectedDate }) => {
   const [appointmentOptions, setAppointmentOptions] = useState([]);
-  const [treatment, setTreatment] = useState(null);
+  const [treatment, setTreatment] = useState(null); // appointment option
   useEffect(() => {
     fetch("appointmentOptions.json")
       .then((res) => res.json())

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const SignUp = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const [data, setData] = useState("");
-  const handleLogin = (data) => {
+  const handleSignUp = (data) => {
     console.log(data);
   };
 
@@ -29,8 +29,25 @@ const Login = () => {
   return (
     <div className="h-[800px] flex justify-center items-center">
       <div className="md:w-4/12 p-10 shadow-xl rounded-lg">
-        <h2 className="text-3xl text-center">Login</h2>
-        <form onSubmit={handleSubmit(handleLogin)}>
+        <h2 className="text-3xl text-center">Sign Up</h2>
+        <form onSubmit={handleSubmit(handleSignUp)}>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Name</span>
+            </label>
+            <input
+              {...register("name", {
+                required: "Name is required",
+              })}
+              type="text"
+              className={`input input-bordered ${
+                errors.name && "input-error"
+              } w-full`}
+            />
+            {errors.name && (
+              <span className="text-red-500">{errors.name.message}</span>
+            )}
+          </div>
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Email</span>
@@ -65,20 +82,17 @@ const Login = () => {
             {errors.password && (
               <span className="text-red-500">{errors.password.message}</span>
             )}
-            <label className="label">
-              <span className="label-text-alt">Forgot Password?</span>
-            </label>
           </div>
           <div className="text-center my-4">
             <input
               type="submit"
-              value={"LOGIN"}
+              value={"Sign Up"}
               className="btn btn-accent w-full my-2"
             />
             <p>
-              New to Doctors Portal?{" "}
-              <Link to={"/signup"} className="text-secondary">
-                Create New Account
+              Already Have an Account?{" "}
+              <Link to={"/login"} className="text-secondary">
+                Login Here
               </Link>
             </p>
           </div>
@@ -92,4 +106,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
