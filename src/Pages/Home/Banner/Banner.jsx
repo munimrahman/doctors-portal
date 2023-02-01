@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-hot-toast";
 import img from "../../../assets/images/chair.png";
 import PrimaryButton from "../../../components/PrimaryButton/PrimaryButton";
 

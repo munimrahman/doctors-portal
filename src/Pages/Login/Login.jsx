@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const { logInWithEmailPassword, user } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const [loginError, setLoginError] = useState("");
   const [data, setData] = useState("");
+
   const handleLogin = (data) => {
+    setLoginError("");
     console.log(data);
+    logInWithEmailPassword(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        toast.success("Logged In Successfully!");
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setLoginError(error.message);
+      });
   };
 
   const passwordValidation = (value) => {
@@ -25,7 +46,6 @@ const Login = () => {
       return "Password must contain at least one special character (!, @, #, $, %, ^, &, or *)";
     return undefined;
   };
-
   return (
     <div className="h-[800px] flex justify-center items-center">
       <div className="md:w-4/12 p-10 shadow-xl rounded-lg">
@@ -75,6 +95,7 @@ const Login = () => {
               value={"LOGIN"}
               className="btn btn-accent w-full my-2"
             />
+            {loginError && <span className="text-red-500">{loginError}</span>}
             <p>
               New to Doctors Portal?{" "}
               <Link to={"/signup"} className="text-secondary">
