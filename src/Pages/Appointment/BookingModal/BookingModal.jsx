@@ -1,27 +1,49 @@
-import React from "react";
+import React, { useContext } from "react";
 import { format } from "date-fns";
+import { AuthContext } from "../../../contexts/AuthProvider";
+import { toast } from "react-hot-toast";
 
-const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
+const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
+  const { user } = useContext(AuthContext);
   const { name, slots } = treatment || {}; // appointments options
   const handleBooking = (event) => {
     event.preventDefault();
     const form = event.target;
-    const name = form.name.value;
+    const userName = form.name.value;
     const slot = form.slot.value;
     const email = form.email.value;
     const phone = form.phone.value;
     const booking = {
       appointmentDate: format(selectedDate, "PP"),
       treatment: name,
-      patient: name,
+      patient: userName,
       slot,
       email,
       phone,
     };
     // TODO: send data to the server and once data is saved then close the modal and display the success message
-    console.log(booking);
-    setTreatment(null);
+    // console.log(booking);
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        if (data.acknowledged) {
+          setTreatment(null);
+          toast.success("Booking Confirmed!");
+          refetch();
+        } else {
+          toast.error(data.message);
+          setTreatment(null);
+        }
+      });
   };
+
   return (
     <>
       <input type="checkbox" id="booking-modal" className="modal-toggle" />
@@ -45,7 +67,10 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
               disabled
               className="input w-full input-bordered"
             />
-            <select name="slot" className="select select-bordered w-full">
+            <select
+              name="slot"
+              className="select select-bordered focus:outline-none w-full"
+            >
               <option disabled>Select a Slot</option>
               {slots?.map((slot, i) => (
                 <option key={i} value={slot}>
@@ -56,12 +81,16 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
             <input
               name="name"
               type="text"
+              defaultValue={user?.displayName}
+              disabled
               placeholder="Your Name"
               className="input w-full input-bordered"
             />
             <input
               name="email"
               type="email"
+              defaultValue={user?.email}
+              disabled
               placeholder="Your Email"
               className="input w-full input-bordered"
             />
@@ -69,7 +98,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
               name="phone"
               type="text"
               placeholder="Phone Number"
-              className="input w-full input-bordered"
+              className="input w-full input-bordered focus:outline-none"
             />
             <br />
             <input
