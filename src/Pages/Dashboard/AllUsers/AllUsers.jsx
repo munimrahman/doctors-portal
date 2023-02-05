@@ -7,12 +7,16 @@ const AllUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/users");
+      const res = await fetch("http://localhost:5000/users", {
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      });
       const data = await res.json();
       return data;
     },
   });
-  const handleManeAdmin = (id) => {
+  const handleMakeAdmin = (id) => {
     fetch(`http://localhost:5000/users/admin/${id}`, {
       method: "PUT",
       headers: {
@@ -54,7 +58,7 @@ const AllUsers = () => {
                 <td>
                   {user?.role !== "admin" && (
                     <button
-                      onClick={() => handleManeAdmin(user._id)}
+                      onClick={() => handleMakeAdmin(user._id)}
                       className="btn btn-xs btn-accent"
                     >
                       Make Admin
