@@ -2,7 +2,7 @@ import React from "react";
 import PrimaryButton from "../../.././components/PrimaryButton/PrimaryButton";
 
 const OptionCard = ({ option, setTreatment }) => {
-  const { name, slots } = option || {};
+  const { name, slots, price } = option || {};
 
   return (
     <div className="card bg-base-100 shadow-xl">
@@ -11,8 +11,11 @@ const OptionCard = ({ option, setTreatment }) => {
         <p className="my-2">
           {slots.length > 0 ? slots[0] : "Try Another Day"}
         </p>
-        <p className="mb-2">
+        <p>
           {slots.length} {slots.length > 1 ? "spaces" : "space"} available
+        </p>
+        <p>
+          <small>Price: ${price}</small>
         </p>
         <div className="card-actions justify-center">
           <label
