@@ -7,22 +7,28 @@ const AllUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/users", {
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      });
+      const res = await fetch(
+        "https://doctors-portal-server-five-inky.vercel.app/users",
+        {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("accessToken"),
+          },
+        }
+      );
       const data = await res.json();
       return data;
     },
   });
   const handleMakeAdmin = (id) => {
-    fetch(`http://localhost:5000/users/admin/${id}`, {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
+    fetch(
+      `https://doctors-portal-server-five-inky.vercel.app/users/admin/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

@@ -12,20 +12,26 @@ const ManageDoctors = () => {
   const { data: doctors = [], refetch } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/doctors", {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      });
+      const res = await fetch(
+        "https://doctors-portal-server-five-inky.vercel.app/doctors",
+        {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      );
       const data = await res.json();
       return data;
     },
   });
   const handleDeleteDoctor = (doctor) => {
-    fetch(`http://localhost:5000/doctors/${doctor._id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
+    fetch(
+      `https://doctors-portal-server-five-inky.vercel.app/doctors/${doctor._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

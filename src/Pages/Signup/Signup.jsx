@@ -46,7 +46,7 @@ const SignUp = () => {
   // save user to database
   const saveUser = (name, email) => {
     const user = { name, email };
-    fetch("http://localhost:5000/users", {
+    fetch("https://doctors-portal-server-five-inky.vercel.app/users", {
       method: "POST",
       headers: {
         "content-type": "application/json",

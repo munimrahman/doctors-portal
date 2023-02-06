@@ -24,7 +24,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
     };
     // TODO: send data to the server and once data is saved then close the modal and display the success message
     // console.log(booking);
-    fetch("http://localhost:5000/bookings", {
+    fetch("https://doctors-portal-server-five-inky.vercel.app/bookings", {
       method: "POST",
       headers: {
         "content-type": "application/json",
